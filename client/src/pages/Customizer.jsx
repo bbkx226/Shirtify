@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useSnapshot } from 'valtio'
-import config from '../config/config'
 import state from '../store'
 import { download } from '../assets'
 import { downloadCanvasToImage, reader} from '../config/helpers'
@@ -19,6 +18,7 @@ const Customizer = () => {
     logoShirt: true,
     stylishShirt: false,
   })
+  const [isOpen, setIsOpen] = useState(false);
 
   // show tab content depending on the activeTab
   const generateTabContent = () => {
@@ -61,8 +61,9 @@ const Customizer = () => {
 
       const data = await response.json()
 
-      handleDecals(type, `data:image/png;base64,${data.photo}`)
-
+      if(data.photo) handleDecals(type, `data:image/png;base64,${data.photo}`)
+      else alert(data.message)
+      
     } catch (error) {
       alert(error)
     } finally {
@@ -127,7 +128,12 @@ const Customizer = () => {
                   <Tab 
                     key={tab.name}
                     tab={tab}
-                    handleClick={() => setActiveEditorTab(tab.name)}
+                    handleClick={() => {
+                      setIsOpen(!isOpen)
+                      if(!isOpen) {
+                        setActiveEditorTab(tab.name)
+                      } else setActiveEditorTab('')
+                    }}
                   />
                 ))}
                 {generateTabContent()}
