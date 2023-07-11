@@ -129,10 +129,9 @@ const Customizer = () => {
                     key={tab.name}
                     tab={tab}
                     handleClick={() => {
-                      setIsOpen(!isOpen)
-                      if(!isOpen) {
-                        setActiveEditorTab(tab.name)
-                      } else setActiveEditorTab('')
+                      if(activeEditorTab === tab.name){
+                        setActiveEditorTab("")
+                      } else setActiveEditorTab(tab.name)
                     }}
                   />
                 ))}
